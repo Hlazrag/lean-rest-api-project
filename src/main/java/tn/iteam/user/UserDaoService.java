@@ -1,0 +1,40 @@
+package tn.iteam.user;
+
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
+//@Component
+public class UserDaoService {
+    private static List<User> users = new ArrayList<>();
+    private static int usersCount =0;
+//    static {
+//        users.add(new User(++usersCount, "Hassen", LocalDate.now().minusYears(30)));
+//        users.add(new User(++usersCount, "Rawan", LocalDate.now().minusYears(25)));
+//        users.add(new User(++usersCount, "Yakine", LocalDate.now().minusYears(25)));
+//    }
+
+    public List<User> findAll(){
+        return users;
+    }
+
+    public User findOne(int id){
+        Predicate<? super User> predicate = user -> user.getId()==id;
+        return users.stream().filter(predicate).findFirst().orElse(null);
+    }
+
+    public User save(User user){
+        user.setId(++usersCount);
+        users.add(user);
+        return user;
+    }
+
+    public void deletById(int id){
+        Predicate<? super User> predicate = user -> user.getId()==id;
+        users.removeIf(predicate);
+    }
+
+}
